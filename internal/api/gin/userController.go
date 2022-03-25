@@ -10,8 +10,6 @@ import (
 )
 
 func getUsers(c *gin.Context) {
-	data.GetUsers()
-
 	c.JSON(http.StatusOK, data.GetUsers())
 }
 
@@ -59,17 +57,7 @@ func putUser(c *gin.Context) {
 		return
 	}
 
-	updatedUser := userDto.ToUser(id)
-
-	u := data.UpdateUser(updatedUser)
-
-	if u != nil {
-		c.JSON(http.StatusOK, u)
-		return
-	}
-
-	u = data.AddUser(updatedUser)
-	c.JSON(http.StatusCreated, u)
+	c.JSON(http.StatusOK, data.UpdateUser(userDto.ToUser(id)))
 }
 
 func deleteUser(c *gin.Context) {

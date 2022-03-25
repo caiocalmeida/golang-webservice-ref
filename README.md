@@ -8,8 +8,7 @@ REST: [gin](https://github.com/gin-gonic/gin)
 
 ## Data persistence
 
-This project currently uses the program's memory for storing data as an example,
-but will use real persistence in the future.
+SQL: [PostgreSQL](https://www.postgresql.org/) through [GORM](https://gorm.io/)
 
 ## Other
 

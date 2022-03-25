@@ -5,53 +5,35 @@ import (
 	"github.com/google/uuid"
 )
 
-var users = []*domain.User{
-	{Id: uuid.UUID{}, Name: "Name1"},
-}
-
 func GetUsers() []*domain.User {
+	var users []*domain.User
+	db.Find(&users)
 	return users
 }
 
 func GetUserBy(id uuid.UUID) *domain.User {
-	u, _ := findUserBy(id)
+	u := &domain.User{}
+	result := db.First(u, id)
 
-	return u
-}
-
-func AddUser(u *domain.User) *domain.User {
-	users = append(users, u)
-
-	return u
-}
-
-func UpdateUser(u *domain.User) *domain.User {
-	if user, i := findUserBy(u.Id); user != nil {
-		users[i] = u
-
+	if result.RowsAffected > 0 {
 		return u
 	}
 
 	return nil
 }
 
-func DeleteUser(id uuid.UUID) bool {
-	if user, i := findUserBy(id); user != nil {
-		users[i] = users[len(users)-1]
-		users = users[:len(users)-1]
-
-		return true
-	}
-
-	return false
+func AddUser(u *domain.User) *domain.User {
+	db.Create(u)
+	return u
 }
 
-func findUserBy(id uuid.UUID) (*domain.User, int) {
-	for i := range users {
-		if users[i].Id == id {
-			return users[i], i
-		}
-	}
+func UpdateUser(u *domain.User) *domain.User {
+	db.Save(u)
+	return u
+}
 
-	return nil, -1
+func DeleteUser(id uuid.UUID) bool {
+	result := db.Delete(&domain.User{}, id)
+
+	return result.RowsAffected > 0
 }
