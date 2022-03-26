@@ -8,14 +8,12 @@ import (
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
-
-func Config() {
-	newDb, err := gorm.Open(postgres.Open(os.Getenv("POSTGRES_CONNECTION_STRING")))
+func NewDB() *gorm.DB {
+	db, err := gorm.Open(postgres.Open(os.Getenv("POSTGRES_CONNECTION_STRING")))
 
 	if err != nil {
 		log.Fatal("Error connecting to database: ", err)
 	}
 
-	db = newDb
+	return db
 }

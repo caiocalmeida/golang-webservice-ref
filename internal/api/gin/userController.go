@@ -9,11 +9,27 @@ import (
 	"github.com/google/uuid"
 )
 
-func getUsers(c *gin.Context) {
-	c.JSON(http.StatusOK, data.GetUsers())
+type UserController interface {
+	getUsers(c *gin.Context)
+	getUser(c *gin.Context)
+	postUser(c *gin.Context)
+	putUser(c *gin.Context)
+	deleteUser(c *gin.Context)
 }
 
-func getUser(c *gin.Context) {
+type userController struct {
+	ur data.UserRepository
+}
+
+func NewUserController(ur data.UserRepository) UserController {
+	return &userController{ur: ur}
+}
+
+func (uc *userController) getUsers(c *gin.Context) {
+	c.JSON(http.StatusOK, uc.ur.GetUsers())
+}
+
+func (uc *userController) getUser(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 
 	if err != nil {
@@ -21,7 +37,7 @@ func getUser(c *gin.Context) {
 		return
 	}
 
-	if u := data.GetUserBy(id); u != nil {
+	if u := uc.ur.GetUserBy(id); u != nil {
 		c.JSON(http.StatusOK, u)
 		return
 	}
@@ -29,7 +45,7 @@ func getUser(c *gin.Context) {
 	c.Status(http.StatusNotFound)
 }
 
-func postUser(c *gin.Context) {
+func (uc *userController) postUser(c *gin.Context) {
 	userDto := &UserDto{}
 
 	if err := c.ShouldBind(userDto); err != nil {
@@ -39,12 +55,12 @@ func postUser(c *gin.Context) {
 
 	newUser := userDto.CreateUser()
 
-	addedUser := data.AddUser(newUser)
+	addedUser := uc.ur.AddUser(newUser)
 
 	c.JSON(http.StatusCreated, addedUser)
 }
 
-func putUser(c *gin.Context) {
+func (uc *userController) putUser(c *gin.Context) {
 	userDto := &UserDto{}
 	if err := c.ShouldBind(&userDto); err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
@@ -57,10 +73,10 @@ func putUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, data.UpdateUser(userDto.ToUser(id)))
+	c.JSON(http.StatusOK, uc.ur.UpdateUser(userDto.ToUser(id)))
 }
 
-func deleteUser(c *gin.Context) {
+func (uc *userController) deleteUser(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 
 	if err != nil {
@@ -68,7 +84,7 @@ func deleteUser(c *gin.Context) {
 		return
 	}
 
-	if data.DeleteUser(id) {
+	if uc.ur.DeleteUser(id) {
 		c.Status(http.StatusOK)
 		return
 	}
