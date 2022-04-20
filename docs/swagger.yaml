@@ -1,0 +1,160 @@
+definitions:
+  api.UserDto:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+info:
+  contact: {}
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Go Web API
+  version: "0.1"
+paths:
+  /user:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/api.UserDto'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Error
+          schema:
+            type: string
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: userDTO
+        required: true
+        schema:
+          $ref: '#/definitions/api.UserDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UserDto'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Error
+          schema:
+            type: string
+      tags:
+      - User
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: User UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UserDto'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Error
+          schema:
+            type: string
+      tags:
+      - User
+    get:
+      parameters:
+      - description: User UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UserDto'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Error
+          schema:
+            type: string
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User data
+        in: body
+        name: userData
+        required: true
+        schema:
+          $ref: '#/definitions/api.UserDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UserDto'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Error
+          schema:
+            type: string
+      tags:
+      - User
+swagger: "2.0"

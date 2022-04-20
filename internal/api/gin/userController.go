@@ -25,10 +25,24 @@ func NewUserController(ur data.UserRepository) UserController {
 	return &userController{ur: ur}
 }
 
+// @Tags     User
+// @Produce  json
+// @Success  200  {array}   UserDto  "OK"
+// @Failure  404  {string}  string   "Not Found"
+// @Failure  500  {string}  string   "Internal Error"
+// @Router   /user [get]
 func (uc *userController) getUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, uc.ur.GetUsers())
 }
 
+// @Tags     User
+// @Produce  json
+// @Param    id   path      string   true  "User UUID"
+// @Success  200  {object}  UserDto  "OK"
+// @Failure  400  {string}  string   "Bad Request"
+// @Failure  404  {string}  string   "Not Found"
+// @Failure  500  {string}  string   "Internal Error"
+// @Router   /user/{id} [get]
 func (uc *userController) getUser(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 
@@ -45,6 +59,14 @@ func (uc *userController) getUser(c *gin.Context) {
 	c.Status(http.StatusNotFound)
 }
 
+// @Tags     User
+// @Accept   json
+// @Produce  json
+// @Param    userDTO  body      UserDto  true  "User data"
+// @Success  200      {object}  UserDto  "OK"
+// @Failure  400      {string}  string   "Bad Request"
+// @Failure  500      {string}  string   "Internal Error"
+// @Router   /user [post]
 func (uc *userController) postUser(c *gin.Context) {
 	userDto := &UserDto{}
 
@@ -60,6 +82,16 @@ func (uc *userController) postUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, addedUser)
 }
 
+// @Tags     User
+// @Accept   json
+// @Produce  json
+// @Param    id        path      string   true  "User UUID"
+// @Param    userData  body      UserDto  true  "User data"
+// @Success  200       {object}  UserDto  "OK"
+// @Failure  400       {string}  string   "Bad Request"
+// @Failure  404       {string}  string   "Not Found"
+// @Failure  500       {string}  string   "Internal Error"
+// @Router   /user/{id} [put]
 func (uc *userController) putUser(c *gin.Context) {
 	userDto := &UserDto{}
 	if err := c.ShouldBind(&userDto); err != nil {
@@ -76,6 +108,15 @@ func (uc *userController) putUser(c *gin.Context) {
 	c.JSON(http.StatusOK, uc.ur.UpdateUser(userDto.ToUser(id)))
 }
 
+// @Tags     User
+// @Accept   json
+// @Produce  json
+// @Param    id   path      string   true  "User UUID"
+// @Success  200  {object}  UserDto  "OK"
+// @Failure  400  {string}  string   "Bad Request"
+// @Failure  404  {string}  string   "Not Found"
+// @Failure  500  {string}  string   "Internal Error"
+// @Router   /user/{id} [delete]
 func (uc *userController) deleteUser(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 
