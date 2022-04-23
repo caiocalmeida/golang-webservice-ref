@@ -41,6 +41,10 @@ paths:
             items:
               $ref: '#/definitions/api.ProductDtoOut'
             type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
         "404":
           description: Not Found
           schema:
@@ -49,6 +53,8 @@ paths:
           description: Internal Error
           schema:
             type: string
+      security:
+      - API Key: []
       tags:
       - Product
     post:
@@ -70,6 +76,10 @@ paths:
             $ref: '#/definitions/api.ProductDtoOut'
         "400":
           description: Bad Request
+          schema:
+            type: string
+        "403":
+          description: Forbidden
           schema:
             type: string
         "500":
@@ -97,6 +107,10 @@ paths:
             type: string
         "400":
           description: Bad Request
+          schema:
+            type: string
+        "403":
+          description: Forbidden
           schema:
             type: string
         "404":
@@ -127,6 +141,10 @@ paths:
           description: Bad Request
           schema:
             type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
         "404":
           description: Not Found
           schema:
@@ -135,6 +153,8 @@ paths:
           description: Internal Error
           schema:
             type: string
+      security:
+      - API Key: []
       tags:
       - Product
     put:
@@ -163,6 +183,10 @@ paths:
           description: Bad Request
           schema:
             type: string
+        "403":
+          description: Forbidden
+          schema:
+            type: string
         "404":
           description: Not Found
           schema:
@@ -173,4 +197,9 @@ paths:
             type: string
       tags:
       - Product
+securityDefinitions:
+  API Key:
+    in: header
+    name: X-API-KEY
+    type: apiKey
 swagger: "2.0"

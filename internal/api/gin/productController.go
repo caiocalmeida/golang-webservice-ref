@@ -25,12 +25,14 @@ func NewProductController(pr data.ProductRepository) ProductController {
 	return &productController{pr: pr}
 }
 
-// @Tags     Product
-// @Produce  json
-// @Success  200  {array}   ProductDtoOut  "OK"
-// @Failure  404  {string}  string         "Not Found"
-// @Failure  500  {string}  string         "Internal Error"
-// @Router   /product [get]
+// @Tags      Product
+// @Security  API Key
+// @Produce   json
+// @Success   200  {array}   ProductDtoOut  "OK"
+// @Failure   401  {string}  string         "Unauthorized"
+// @Failure   404  {string}  string         "Not Found"
+// @Failure   500  {string}  string         "Internal Error"
+// @Router    /product [get]
 func (pc *productController) getProducts(c *gin.Context) {
 	products := pc.pr.GetProducts()
 
@@ -42,14 +44,16 @@ func (pc *productController) getProducts(c *gin.Context) {
 	c.JSON(http.StatusOK, productDtos)
 }
 
-// @Tags     Product
-// @Produce  json
-// @Param    id   path      string         true  "Product UUID"
-// @Success  200  {object}  ProductDtoOut  "OK"
-// @Failure  400  {string}  string         "Bad Request"
-// @Failure  404  {string}  string         "Not Found"
-// @Failure  500  {string}  string         "Internal Error"
-// @Router   /product/{id} [get]
+// @Tags      Product
+// @Security  API Key
+// @Produce   json
+// @Param     id   path      string         true  "Product UUID"
+// @Success   200  {object}  ProductDtoOut  "OK"
+// @Failure   400  {string}  string         "Bad Request"
+// @Failure   401  {string}  string         "Unauthorized"
+// @Failure   404  {string}  string         "Not Found"
+// @Failure   500  {string}  string         "Internal Error"
+// @Router    /product/{id} [get]
 func (pc *productController) getProduct(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 
@@ -72,6 +76,7 @@ func (pc *productController) getProduct(c *gin.Context) {
 // @Param    productDTO  body      ProductDtoIn   true  "Product data"
 // @Success  201         {object}  ProductDtoOut  "OK"
 // @Failure  400         {string}  string         "Bad Request"
+// @Failure  403          {string}  string         "Forbidden"
 // @Failure  500         {string}  string         "Internal Error"
 // @Router   /product [post]
 func (pc *productController) postProduct(c *gin.Context) {
@@ -96,6 +101,7 @@ func (pc *productController) postProduct(c *gin.Context) {
 // @Param    productData  body      ProductDtoIn   true  "Product data"
 // @Success  200          {object}  ProductDtoOut  "OK"
 // @Failure  400          {string}  string         "Bad Request"
+// @Failure  403  {string}  string  "Forbidden"
 // @Failure  404          {string}  string         "Not Found"
 // @Failure  500          {string}  string         "Internal Error"
 // @Router   /product/{id} [put]
@@ -123,6 +129,7 @@ func (pc *productController) putProduct(c *gin.Context) {
 // @Param    id   path      string  true  "Product UUID"
 // @Success  200  {string}  string  "OK"
 // @Failure  400  {string}  string  "Bad Request"
+// @Failure  403         {string}  string         "Forbidden"
 // @Failure  404  {string}  string  "Not Found"
 // @Failure  500  {string}  string  "Internal Error"
 // @Router   /product/{id} [delete]

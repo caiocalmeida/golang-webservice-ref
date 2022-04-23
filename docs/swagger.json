@@ -12,6 +12,11 @@
     "paths": {
         "/product": {
             "get": {
+                "security": [
+                    {
+                        "API Key": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -26,6 +31,12 @@
                             "items": {
                                 "$ref": "#/definitions/api.ProductDtoOut"
                             }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "404": {
@@ -76,6 +87,12 @@
                             "type": "string"
                         }
                     },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "Internal Error",
                         "schema": {
@@ -87,6 +104,11 @@
         },
         "/product/{id}": {
             "get": {
+                "security": [
+                    {
+                        "API Key": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -111,6 +133,12 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "type": "string"
                         }
@@ -170,6 +198,12 @@
                             "type": "string"
                         }
                     },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
@@ -212,6 +246,12 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
                         "schema": {
                             "type": "string"
                         }
@@ -266,6 +306,13 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "API Key": {
+            "type": "apiKey",
+            "name": "X-API-KEY",
+            "in": "header"
         }
     }
 }
