@@ -12,11 +12,11 @@ type Router interface {
 }
 
 type router struct {
-	uc UserController
+	pc ProductController
 }
 
-func NewRouter(uc UserController) Router {
-	return &router{uc: uc}
+func NewRouter(pc ProductController) Router {
+	return &router{pc: pc}
 }
 
 // @Title         Go Web API
@@ -28,11 +28,11 @@ func (r *router) Start() {
 
 	docs.SwaggerInfo.BasePath = ""
 
-	e.GET("/user", r.uc.getUsers)
-	e.GET("/user/:id", r.uc.getUser)
-	e.POST("/user", r.uc.postUser)
-	e.PUT("/user/:id", r.uc.putUser)
-	e.DELETE("/user/:id", r.uc.deleteUser)
+	e.GET("/product", r.pc.getProducts)
+	e.GET("/product/:id", r.pc.getProduct)
+	e.POST("/product", r.pc.postProduct)
+	e.PUT("/product/:id", r.pc.putProduct)
+	e.DELETE("/product/:id", r.pc.deleteProduct)
 
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 

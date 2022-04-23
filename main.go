@@ -16,6 +16,6 @@ func main() {
 		godotenv.Load(".env")
 	}
 
-	r := api.NewRouter(api.NewUserController(data.NewUserRepository(data.NewDB())))
+	r := api.NewRouter(api.NewProductController(data.NewProductRepository(data.NewDB())))
 	r.Start()
 }

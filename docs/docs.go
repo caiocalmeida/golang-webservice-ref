@@ -20,13 +20,13 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/user": {
+        "/product": {
             "get": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "responses": {
                     "200": {
@@ -34,7 +34,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/api.UserDto"
+                                "$ref": "#/definitions/api.ProductDtoOut"
                             }
                         }
                     },
@@ -60,24 +60,24 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "parameters": [
                     {
-                        "description": "User data",
-                        "name": "userDTO",
+                        "description": "Product data",
+                        "name": "productDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.UserDto"
+                            "$ref": "#/definitions/api.ProductDtoIn"
                         }
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.UserDto"
+                            "$ref": "#/definitions/api.ProductDtoOut"
                         }
                     },
                     "400": {
@@ -95,18 +95,18 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{id}": {
+        "/product/{id}": {
             "get": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User UUID",
+                        "description": "Product UUID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -116,7 +116,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.UserDto"
+                            "$ref": "#/definitions/api.ProductDtoOut"
                         }
                     },
                     "400": {
@@ -147,23 +147,23 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User UUID",
+                        "description": "Product UUID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "User data",
-                        "name": "userData",
+                        "description": "Product data",
+                        "name": "productData",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.UserDto"
+                            "$ref": "#/definitions/api.ProductDtoIn"
                         }
                     }
                 ],
@@ -171,7 +171,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.UserDto"
+                            "$ref": "#/definitions/api.ProductDtoOut"
                         }
                     },
                     "400": {
@@ -202,12 +202,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User UUID",
+                        "description": "Product UUID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -217,7 +217,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.UserDto"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -243,12 +243,35 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "api.UserDto": {
+        "api.ProductDtoIn": {
             "type": "object",
             "required": [
+                "description",
                 "name"
             ],
             "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.ProductDtoOut": {
+            "type": "object",
+            "required": [
+                "description",
+                "id",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 }
